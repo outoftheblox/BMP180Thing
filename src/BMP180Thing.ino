@@ -3,7 +3,7 @@
 #include <Wire.h>
 #include <Adafruit_BMP085.h>
 
-using namespace g3rb3n;
+using namespace ootb;
 
 Thing thing;
 BlinkPattern led(BUILTIN_LED);
@@ -27,13 +27,13 @@ void setup()
   
   thing.begin();
 
-  thing.addSensor(thing.clientId() + "/bmp180/pressure", 5000, [](Value& value){
+  thing.addSensor("bmp180/pressure/" + thing.clientId(), 5000, [](Value& value){
     value = bmp.readPressure();
     led.setPattern(normal);
-    //Serial.println("Read " + value);
+    Serial.println("Read " + String(value));
   });
 
-  thing.addActuator(thing.clientId() + "/bmp180/display", [](Value& value){
+  thing.addActuator("bmp180/display/" + thing.clientId(), [](Value& value){
     Serial.println("Got " + String(value));
   });
 
