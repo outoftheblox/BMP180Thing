@@ -13,6 +13,9 @@ BlinkPattern::Pattern<2> panic{{1,1},25};
 BlinkPattern::Pattern<2> start{{1,9},25};
 BlinkPattern::Pattern<2> normal{{1,39},25};
 
+String sensorTopic = "things/" + thing.clientId() + "/bmp180/pressure";
+String actuatorTopic = "things/" + thing.clientId() + "/bmp180/display";
+
 void setup()
 {
   Serial.begin(230400);
@@ -27,13 +30,13 @@ void setup()
   
   thing.begin();
 
-  thing.addSensor("bmp180/pressure/" + thing.clientId(), 5000, [](Value& value){
+  thing.addSensor(sensorTopic, 5000, [](Value& value){
     value = bmp.readPressure();
     led.setPattern(normal);
     Serial.println("Read " + String(value));
   });
 
-  thing.addActuator("bmp180/display/" + thing.clientId(), [](Value& value){
+  thing.addActuator(actuatorTopic, [](Value& value){
     Serial.println("Got " + String(value));
   });
 
